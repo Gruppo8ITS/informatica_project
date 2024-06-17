@@ -1,0 +1,917 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<title>INFORMATICA_PROJECT</title>
+	
+	</head>
+	<body>
+		<header class="page-header" role="banner">
+		<h1 id="project_name">Harmonizing ArCo: An RDF-based Approach to Musical Instrument Ontology</h1>
+		<h2 id="project_tagline">Information Technology Skills Project 2024</h2>
+		</header>
+		<div class="topnav">
+			  <!-- Qua c'è la predisposizione del menù-->
+			  <a href="home.html">Home</a>
+			  <a href="Methodology.html">Methodology</a>
+			  <a class="active">Analysis and Results</a>
+			  <a href="Error.html">Model Response Evaluation</a>
+			  <a href="Conclusions.html">Conclusions</a>
+			  <a href="Appendix.html">Appendix</a>
+			  <!-- Questo di sotto serve per inserire cose a destra-->
+		</div>
+	
+	
+	
+	<p style="margin-top:30px"> First, we produced a very general query, and we found all the Musical Instruments present in ArCo, under the class ‘Cultural Property’.  
+	</p>
+	
+	<!-- PRIMA QUERY -->
+	
+	<p style="margin-top:30px; margin-bottom: 20px">	With the following query we asked SPARQL to “Retrieve all the cultural properties present in ArCo with the name ‘musical instrument’, ordered by their label. For each of them, give me the depiction if any is available”: 
+	
+	</p>
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href=" http://www.w3.org/2000/01/rdf-schema#">  http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href=" https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a> 
+	</p>
+	<p>
+	SELECT DISTINCT ?cp ?label ?depiction 
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	OPTIONAL {?cp foaf:depiction ?depiction} 
+	</p>
+	<p>
+	} 
+	</p>
+	<p>
+	ORDER BY (?label)  
+	</p>
+	
+	<p style="margin-top:30px">
+	
+	<b>RESULTS:</b> all the Musical Instruments present in ArCo.
+	</p>
+	
+	<img src="1.png" style="width: 1600px; height:800px; margin-left: 125px; margin-right: 100px;">
+	
+	<!-- SECONDA QUERY -->
+	
+	<p style="margin-top:30px; margin-bottom: 30px"> Since we wanted to know the exact number of musical instruments, we added the key word COUNT to our query. We noticed that the results retrieved both from the first and second query included the language tag @eng, so we also added a FILTER to retrieve the results just once, under the tag @it. Therefore, we ran the following query:   
+ 
+	</p>
+	
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#">  http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/">  https://w3id.org/arco/ontology/arco/ </a>
+	</p>
+	<p>
+	SELECT (COUNT (DISTINCT ?cp) ?as ?count) 
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	FILTER (LANG (?label)="it") 
+	</p>
+	<p>
+	} 
+	</p>
+	
+	<p style="margin-top:30px; margin-bottom: 30px;">
+	
+	<b>RESULTS</b>: The results showed that there are exactly 556 musical instruments in ArCo. 
+	
+	</p>
+	
+	<img src="2.png" style="width: 300px; height:200px;">
+	
+	<!-- TERZA QUERY -->
+	
+	<p style="margin-top:20px; margin-bottom: 30px">	Then, we decided to focus on a specific property characterizing the musical instruments present in ArCo, which is <i>a-dd:hasMaterial</i>. We ran the following query: 
+  
+	</p>
+	
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#">  http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/"> https://w3id.org/arco/ontology/arco/ </a> 
+	</p>
+	
+	<p>
+	PREFIX arco-dd: <a href= "https://w3id.org/arco/ontology/denotative-description/"> https://w3id.org/arco/ontology/denotative-description/ </a>
+	</p>
+
+	<p>
+	SELECT DISTINCT ?cp ?label ?Material 
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	{?cp a-dd:hasMaterial ?Material}
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	FILTER (LANG (?label)="it") 
+	</p>
+	<p>
+	} 
+	</p>
+	
+	<p style="margin-top:30px; margin-bottom: 30px;">
+	
+	<b>RESULTS:</b> 
+	
+	</p>
+		
+	<img src="3.png" style="width: 1600px; height:800px; margin-left: 125px; margin-right: 100px;">
+	
+	<p style="margin-top:30px; margin-bottom: 30px;"> This research showed us each musical instrument present in arco associated with the property <i>a-dd:hasMaterial</i>. We also counted them, adding the key word COUNT to our query, and we observed that there are only 267 out of 556 cultural properties as musical instruments associated with this property:  
+	
+	</p>
+	
+	<!-- QUARTA QUERY -->
+	
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#" > http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a>
+	</p>
+	
+	<p>
+	PREFIX arco-dd: <a href= "https://w3id.org/arco/ontology/denotative-description/"> https://w3id.org/arco/ontology/denotative-description/ </a>
+	</p>
+
+	<p>
+	SELECT (COUNT(DISTINCT ?cp) ?as ?label) 
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	{?cp a-dd:hasMaterial ?Material}
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	FILTER (LANG (?label)="it") 
+	</p>
+	<p>
+	} 
+	</p>
+	<p>
+	ORDER BY (?label)
+	</p>
+	
+	<p style="margin-top:30px; margin-bottom: 0px;">
+	
+	<b>RESULTS:</b> 
+	
+	</p>
+	
+	<img src="4.png" style="width: 800px; height:200px; margin-top: 30px; margin-bottom: -30px;">
+
+	<!-- QUINTA QUERY -->
+	
+	<p style="margin-top:10px; margin-bottom: 30px"> As many of them were excluded from our query, we decided to explore the results of the first query, showing all the musical instruments, and we noticed that many cultural properties were not associated with the property <i>a-dd:hasMaterial</i>, but to <i>a-dd:hasMaterialOrTechnique</i>, which also specifies the material the musical instrument is made of. Therefore, we decided to also include this other property in the query, using the keyword UNION:
+  
+	</p>
+	
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#" > http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a>
+	</p>
+	
+	<p>
+	PREFIX arco-dd: <a href= "https://w3id.org/arco/ontology/denotative-description/"> https://w3id.org/arco/ontology/denotative-description/ </a>
+	</p>
+
+	<p>
+	SELECT DISTINCT ?cp ?label ?Material ?MaterialOrTechnique
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	OPTIONAL {
+	</P>
+	<p>
+	{?cp a-dd:hasMaterial ?Material}
+	</p>
+	<P>
+	UNION
+	</P>
+	<p>
+	{?cp a-dd:hasMaterialOrTechnique ?MaterialOrTechnique}}
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	FILTER (LANG (?label)="it") 
+	</p>
+	<p>
+	} 
+	</p>
+	<p>
+	ORDER BY (?label)
+	</p>
+
+	<p style="margin-top:30px; margin-bottom: 30px;">
+	
+	<b>RESULTS:</b> </p>
+
+	<img src="5.png" style="width: 1600px; height:800px; margin-left: 125px; margin-right: 100px;">
+	<p>
+	<img src="6.png" style="width: 1500px; height:600px; margin-left: 175px; margin-right: 100px; margin-top: 20px;">
+	</p>
+	<p style="margin-top: 30px ; margin-bottom: 30px;" > 
+	With this query we did not just discover that there were instruments not associated with neither of these properties; we also observed that, notwithstanding the keyword DISTINCT in the SELECT- clause, there were duplicates in the results retrieved. However, examining them carefully, we could notice that the duplicates were simply related to the fact that a single instrument can have more than one material, as we can see with the results highlighted. For example, “strumento musicale a percussione” (ending __1296) appears four times in the table, being its materials ‘cuoio’, ‘metallo’, ‘pergamena’, and ‘terracotta’. This should not be a surprise, because in the SELECT- clause we wanted to retrieve all the materials or materials and techniques: in any case, it was an interesting point to examine. 
+	</p>
+	
+	<!-- SESTA QUERY -->
+	
+	<p style="margin-top:30px; margin-bottom: 30px"> Counting only the instruments associated with one of the properties, we had to eliminate the OPTIONAL keyword, and we also removed from the SELECT part the variables <b>?Material</b> and <b>?MaterialOrTechnique</b>, leaving just ?cp. Thus, we ran the following query: 
+
+	</p>
+	
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#"> http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/"> https://w3id.org/arco/ontology/arco/ </a>
+	</p>
+	
+	<p>
+	PREFIX arco-dd: <a href= "https://w3id.org/arco/ontology/denotative-description/"> https://w3id.org/arco/ontology/denotative-description/ </a>
+	</p>
+
+	<p>
+	SELECT (COUNT(DISTINCT ?cp) AS ?label)
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	{?cp a-dd:hasMaterial ?Material}
+	</p>
+	<P>
+	UNION
+	</P>
+	<p>
+	{?cp a-dd:hasMaterialOrTechnique ?MaterialOrTechnique}}
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	FILTER (LANG (?label)="it") 
+	</p>
+	<p>
+	} 
+	</p>
+	<p>
+	ORDER BY (?label)
+	</p>
+
+	<p style="margin-top:30px; margin-bottom: 0px;">
+	
+	<b>RESULTS:</b> 
+	
+	</p>
+
+	<img src="7.png" style="width: 800px; height:180px; margin-top: 30px; margin-bottom: -30px;">
+
+	<p style="margin-top: 10px ; margin-bottom: 30px;"> 
+	We counted 548 out of 556 total instruments, so only <b>8 of them turned out as not being associated with any material property.</b>  
+	</p>
+	
+	<p> 
+	There were very few of them, but we wanted to count and examined as much as we could. However, we did not know how to ask to SPARQL to <b>retrieve only the musical instruments which were missing the material property.</b> We asked <i>Chat GPT</i> and <i>Gemini</i> a suggestion, using the <b>few-shot prompting technique</b> (providing an example of query): 
+	</p>
+	
+	<p style="margin-bottom: 20px"> GEMINI proposed using the MINUS-clause: </p>
+	
+	<img src="8.png" style="width: 800px; height:500px; margin-left: 500px; margin-right: 100px;">
+	
+	<p style="margin-top: 30px;">
+	<img src="9.png" style="width: 680px; height:400px; margin-left: 560px; margin-right: 100px;">
+	</p>
+	
+	<p style="margin-top: 30px; margin-bottom: 30px"> Then, we asked the same task to <i>ChatGPT</i>, and it also suggested the MINUS-clause. </p>
+	
+	<img src="10.png" style="width: 800px; height:500px; margin-left:460px; margin-right: 100px;">
+	
+	<p style="margin-top: 30px;">
+	<img src="11.png" style="width: 800px; height:500px; margin-left: 470px; margin-right: 100px;">
+	</p>
+	<!--
+	<p style="margin-top: 30px;">
+	<img src="immagine12.jpg" style="width: 800px; height:500px;">
+	</p>
+	
+	<!-- SETTIMA QUERY -->
+	
+	<p style="margin-top:30px; margin-bottom: 30px"> We proceeded running the <b>query provided by the Language Models</b>,  so that we verified that there are precisely 8 musical instruments that are not associated with a specific material: 
+
+	</p>
+	
+	<p>
+	PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+	</p>
+	<p>
+	PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#" > http://www.w3.org/2000/01/rdf-schema# </a>
+	</p>
+	<p>
+	PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a>
+	</p>
+	
+	<p>
+	PREFIX arco-dd: <a href= "https://w3id.org/arco/ontology/denotative-description/"> https://w3id.org/arco/ontology/denotative-description/ </a>
+	</p>
+
+	<p>
+	SELECT DISTINCT ?cp ?label
+	</p>
+	<p>
+	WHERE 
+	</p>
+	<p>
+	{?cp rdfs:label ?label ; 
+	</p>
+	<p>
+	rdf:type arco:CulturalProperty . 
+	</p>
+	<p>
+	FILTER(REGEX(?label , "strumento musicale" , "i")) 
+	</p>
+	<p>
+	FILTER (LANG (?label)="it") 
+	</p>
+	<P>
+	MINUS 
+	</P>
+	<p style="margin-left: 10px;">
+	{?cp a-dd:hasMaterial ?Material.}
+	</p>
+	<p style="margin-left: 10px;">
+	MINUS
+	</P>
+	<p>
+	{?cp a-dd:hasMaterialOrTechnique ?MaterialOrTechnique.}
+	</p>
+	<p>
+	} 
+	</p>
+	<p>
+	ORDER BY (?label)
+	</p>
+	
+	
+	<p style="margin-top:30px; margin-bottom: 0px;">
+	
+	<b>RESULTS:</b> 8 musical instruments not associated whit a maerial
+	
+	</p>
+	
+	<p style="margin-top: 30px;">
+	<img src="12.png" style="width: 1400px; height:700px; margin-left: 220px; margin-right: 100px; margin-bottom: 30px;">
+	</p>
+	
+	<p> <b> Among these instruments retrieved, we focused on two of them: </b> </p>
+	<ul>
+		<li>
+			<p> ZITHER (KONZERTZITHER):</p>
+			<a href= "https://w3id.org/arco/resource/AltoAdige/HistoricOrArtisticProperty/20830">  https://w3id.org/arco/resource/AltoAdige/HistoricOrArtisticProperty/20830 <a/>
+
+		<li>
+			<p> STRUMENTO MUSICALE DI ZIEGLER, I:</p>
+			<a href= "https://w3id.org/arco/resource/AltoAdige/CulturalProperty/40023768">  https://w3id.org/arco/resource/AltoAdige/CulturalProperty/40023768 <a/>
+
+	</ul>
+	
+	<ol>
+		<li style=" color:black; font-size: 40; text-align: justify; margin-top: 50px;"> <p style= "font-size: 40;"> <b> ZITHER </b> </p> </li>
+	
+		<img src="ZITHER.jpg" style="margin-top: 30px; margin-left: 500px;">
+		
+		<p> Reading the record of the instrument on ArCo, we observed that despite the missing information about materials, it displays a <b>very wide description</b> (as we can read both in <i>dc:description</i> and <i>core:description</i>). However, since its definition is in German, we tried to <b>translate</b> it with the help of ChatGPT: </p>
+			<p> <img src="ZITHER1.png" style="margin-top: 40px; margin-left: 630px;"> </p>
+			
+			<p> <img src="ZITHER2.png" height="800" width="600 "style="margin-top: 40px; margin-left: 640px; margin-bottom: 25px;"> </p>
+			
+			<p> As a result, we discovered that the materials that the Zither instrument is made of are <b>wood, iron, metal, plastic, metal wire and mother-of-pearl.</b> </p>
+		
+			<p style="margin-bottom:30px;"> What we would like to propose is to link the musical instrument to the materials it is made of as reported in its description, using the predicate arco-dd:hasMaterial. To specify the exact materials, we based our triples on the list of materials found in ArCo through this query: </p>
+		
+			<p>
+			PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns" > http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+			</p>
+			<p>
+			PREFIX rdfs: <a href= "http://www.w3.org/2000/01/rdf-schema#" > http://www.w3.org/2000/01/rdf-schema# </a>
+			</p>
+			<p>
+			PREFIX arco: <a href= "https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a>
+			</p>
+			<p>
+			PREFIX arco-dd: <a href= "https://w3id.org/arco/ontology/denotative-description/"> https://w3id.org/arco/ontology/denotative-description/ </a>
+			</p>
+	
+			<p style="margin-top: 30px;">
+			SELECT DISTINCT ?Material ?MaterialOrTechnique
+			</p>
+			<p>
+			WHERE 
+			</p>
+			<p>
+			{?cp rdfs:label ?label ; 
+			</p>
+			<p>
+			rdf:type arco:CulturalProperty . 
+			</p>
+			<p>
+			OPTIONAL {?cp a-dd:hasMaterial ?Material}  
+			</p>
+			<p>
+			OPTIONAL { ?cp a-dd:hasMaterialOrTechnique ?MaterialOrTechnique}   
+			</p>
+			<P>
+			FILTER(REGEX(?label , "strumento musicale" , "i"))  
+			</P>
+			<p >
+			FILTER (lang(?label) = "it")
+			</p>
+			<p>
+			} 
+			</p>
+			<p>
+			ORDER BY (?label)
+			</p>
+			
+			<p> However, as we had to associate 6 materials to one subject, at first we did not know how to correctly establish this relationship. Therefore, we ask the LLMs using the <b>zero-shot prompting technique</b>. Gemini proposed making this association through the key word UNION:</p>
+
+			<div class= "image-container">
+				
+				<img src= " ZITHER3.png" alt="Immagine 2" height="500" width="600" style="margin-left: 480px; margin-top: -30px; margin-bottom: 30px;">
+			</div>
+			
+			<div class= "image-container">
+				<img src= " ZITHER4.png" alt="Immagine 1" height="510" width="600" style="margin-bottom: 25px; margin-top: 50px;">
+				
+			</div>
+
+			<p style="margin-bottom: 30px;"> ChatGPT suggested using the semicolon as all materials are related to the same subject (ZITHER): </p>
+			
+			<div class= "image-container">
+				
+				<img src= " ZITHER5.png" alt="Immagine 1" height="400" width="500" style="margin-left: 480px; margin-top: 30px; margin-bottom: 30px;">
+			</div>
+			
+			<div class= "image-container">
+				<img src= " ZITHER6.png" alt="Immagine 2" height="510" width="600" style="margin-bottom: 30px; margin-top: 30px;">
+				
+			</div>
+			
+			<p style="margin-bottom: 30px;"> We preferred ChatGPT’s advice because the UNION could create ambiguity within the triple. We wanted all materials to be related to the instrument, not just some of them. Therefore, we tried to correct the approach of Gemini, explaining that the UNION clause could not be the best alternative to opt for. Thus, it recognized the mistake, and suggested creating individual statements for each material associated with the instrument: </p>
+			
+			<img src="ZITHER7.png" style="margin-left: 580px;">
+			
+			<p style="font-size: 30px; margin-top: 30px;"> <b> NEW TRIPLE </b> </p>
+			
+			<p> So, the new triple should be the following one, but we could also create a single triple for each material which the instrument is made of: </p>
+	
+			<p style="margin-top: 30px"> <b>SUBJECT</b> </p>
+			
+			<p> Zither, Zither, strumento musicale: </p>
+			<a href= "https://w3id.org/arco/resource/AltoAdige/HistoricOrArtisticProperty/20830"> https://w3id.org/arco/resource/AltoAdige/HistoricOrArtisticProperty/20830 </a>
+			
+			<p style="margin-top: 30px"> <b>PREDICATE</b> </p>
+			<p> arc-dd:hasMaterial </p>
+			
+			<p> <b>1 <sup> st </sup> Object </b></p>
+			<p> Legno, filo metallico: </p>
+			<a href= "https://w3id.org/arco/resource/AltoAdige/TechnicalCharacteristic/legnofilo-metallico"> https://w3id.org/arco/resource/AltoAdige/TechnicalCharacteristic/legnofilo-metallico ; </a>
+			
+			<p> <b>2 <sup> st </sup> Object </b></p>
+			<p> Metallo: 
+			<a href= "https://w3id.org/arco/resource/TechnicalCharacteristic/metallo ;"> https://w3id.org/arco/resource/TechnicalCharacteristic/metallo ;</a>
+			</p>
+			
+			<p> <b>3 <sup> st </sup> Object </b></p>
+			<p> Ferro: 
+			<a href= "https://w3id.org/arco/resource/AltoAdige/TechnicalCharacteristic/ferro"> https://w3id.org/arco/resource/AltoAdige/TechnicalCharacteristic/ferro ; </a>
+			</p>
+			
+			<p> <b>4 <sup> st </sup> Object </b></p>
+			<p> Plastica:
+			<a href= "https://w3id.org/arco/resource/TechnicalCharacteristic/plastica"> https://w3id.org/arco/resource/TechnicalCharacteristic/plastica ; </a>
+			</p>
+			
+			<p> <b>5 <sup> st </sup> Object </b></p>
+			<p> Madreperla:
+			<a href= "https://w3id.org/arco/resource/TechnicalCharacteristic/madreperla"> https://w3id.org/arco/resource/TechnicalCharacteristic/madreperla ; </a>
+			</p>
+			
+		<li style=" color:black; font-size: 40; text-align: justify; margin-top: 50px; margin-bottom: 30px;"> <p style= "font-size: 40;"> <b> STRUMENTO MUSICALE DI ZIEGLER, I </b> </p> </li>
+			
+			<img src="ZIEG1.jpg" style="margin-left: 520; margin-bottom: 30px;">
+			
+			<p> Similarly, another musical instrument, "Strumento musicale di Ziegler," was missing details about its material. Initially, based on the picture, we assumed it was simply made of wood. However, upon translating the description, using ChatGPT again, we discovered that in addition to wood (likely maple, although uncertain), it features four metal keys, which are faintly visible when zooming in on the photo.</p>
+			
+			<img src="ZIEG2.png" style="margin-left: 350px;">
+						
+			<p style="font-size: 30px; margin-top: 30px;"> <b> NEW TRIPLE </b> </p>
+			
+			<p> Therefore, we propose a new triple that specifies the materials which the instrument consists of:</p>
+			
+			<p style="margin-top: 30px"> <b>SUBJECT</b> </p>			
+			<p> Strumento Musicale di Ziegler </p>
+			<a href= "https://w3id.org/arco/resource/AltoAdige/CulturalProperty/40023768"> https://w3id.org/arco/resource/AltoAdige/CulturalProperty/40023768  </a>
+			
+			<p style="margin-top: 30px"> <b>PREDICATE</b> </p>
+			<p> arc-dd:hasMaterial </p>
+			
+			<p> <b>1 <sup> st </sup> Object </b></p>
+			<p> Legno: 
+			<a href= ":  https://w3id.org/arco/resource/TechnicalCharacteristic/legno"> :  https://w3id.org/arco/resource/TechnicalCharacteristic/legno ; </a>
+			</p>
+			<p> <b>2 <sup> st </sup> Object </b></p>
+			<p> Metallo: 
+			<a href= "https://w3id.org/arco/resource/TechnicalCharacteristic/metallo ;"> https://w3id.org/arco/resource/TechnicalCharacteristic/metallo ;</a>
+			</p>
+			
+			<p style="margin-top: 30px;"> The exact same procedure can be applied to the remaining 6 musical instruments that miss information on materials. </p>
+			
+			<p style="margin-top: 10px;"> ---------------------------------------------------------</p>
+			
+			<p style="margin-bottom: 30px;"> Continuing with our project, we created a query specifically focused on percussion musical instruments. The following SPARQL query retrieves all relevant entries from the ArCo dataset, specifically targeting percussion musical instruments according to their Italian labels. As the total number of these instruments in ArCo corresponds to 66, we decided to set a LIMIT of 25 results to retrieve, so that we could have a more detailed point of view. </p>
+			
+			<p>
+			PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+			</p>
+			<p>
+			PREFIX rdfs: <a href=" http://www.w3.org/2000/01/rdf-schema#">  http://www.w3.org/2000/01/rdf-schema# </a>
+			</p>
+			<p>
+			PREFIX arco: <a href=" https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a> 
+			</p>
+			
+			<p style=" margin-top: 30px;">
+			SELECT DISTINCT ?cp ?label  
+			</p>
+			<p>
+			WHERE 
+			</p>
+			<p>
+			{?cp rdfs:label ?label ; 
+			</p>
+			<p>
+			rdf:type arco:CulturalProperty . 
+			</p>
+			<p>
+			FILTER(REGEX(?label , "strumento musicale a percussione" , "i")) 
+			</p>
+			<p>
+			FILTER (lang(?label) = "it") 
+			</p>
+			<p>
+			} 
+			</p>
+			<p>
+			ORDER BY (?label)  
+			</p>
+			<p> LIMIT 25 </p>
+
+		<li style=" color:black; font-size: 40; text-align: justify; margin-top: 50px; margin-bottom: 30px;"> <p style= "font-size: 40;"> <b> STRUMENTO MUSICALE A PERCUSSIONE, ANANDA LAHARI </b> </p> </li>
+			
+			<a href= "https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299"> https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299 </a>
+			
+			<p style="margin-top:30px;"> As we explored the website, we delved into various musical instruments, carefully examining their descriptions and images. We opened numerous records to understand the construction and other properties associated with each instrument. </p>
+			
+			<img src=" ANANDA1.png" width="800" height="500" style="margin-left: 520px;" >
+			
+			<p style="margin-top: 30px;"> During our exploration, we came across a percussion instrument (Ananda Lahari) that intrigued us due to its unique feature: <b>a knob attached to the main body with a string</b>. This detail, visible in the image, was surprising because the instrument's description <b>did not mention a string or its number of components. </b> </p>	
+			
+			<p> We used the following query to obtain a list of all percussion instruments with their corresponding number of <b>components</b> (if specified):</p>
+			
+			<p style=" margin-top: 30px;">
+			PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+			</p>
+			<p>
+			PREFIX rdfs: <a href=" http://www.w3.org/2000/01/rdf-schema#">  http://www.w3.org/2000/01/rdf-schema# </a>
+			</p>
+			<p>
+			PREFIX arco: <a href=" https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a> 
+			</p>
+			
+			<p style=" margin-top: 30px;">
+			SELECT DISTINCT ?cp ?label ?numberofComponents  
+			</p>
+			<p>
+			WHERE 
+			</p>
+			<p>
+			{?cp rdfs:label ?label ; 
+			</p>
+			<p>
+			rdf:type arco:CulturalProperty . 
+			</p>
+			<p>
+			OPTIONAL {?cp arco:numberOfComponents ?numberofComponents } 
+			</p>
+			<p>
+			FILTER(REGEX(?label , "strumento musicale a percussione" , "i"))
+			</p>
+			<p>
+			FILTER (lang(?label) = "it") 
+			</p>
+			<p>
+			} 
+			</p>
+			<p>
+			ORDER BY (?label)  
+			</p>
+			
+			<img src="ANANDA2.png" style="margin-top: 30px; margin-left: 80px;">
+			
+			<p style="margin-top: 30px;"> Unlikely other instruments that displayed their components, the Ananda Lahari (_299) did not include the knob that yet is visible in the picture. Also, its structure was very different from the rest of percussion instruments. We hoped that leveraging the knowledge of LLM models could provide additional insights about the cultural property. We asked Gemini and ChatGPT to provide information about their understanding of the specific type of instrument we were interested in, using the <i><b>Chain-of-Thought prompting technique.</i></b></p>
+
+			<p style="margin-top: 30px;"> <b>GEMINI</b> </p>
+			
+			<div class="image-container">
+				<img src= " ANANDA3.png" alt="Immagine 1" height="510" width="600" style="margin-bottom: 30px; margin-top: 30px; margin-left: 380px;">
+			</div>
+			
+			<div class="image-container">
+				<img src= " ANANDA4.png" alt="Immagine 2" height="410" width="550" style="margin-bottom: 30px; margin-top: 30px;">
+			</div>
+			
+			
+			<p style="margin-top: 30px;"> <b>CHAT GPT</b> </p>
+			
+			<div class="image-container">
+				<img src= " ANANDA5.png" alt="Immagine 1" height="510" width="600" style="margin-bottom: 30px; margin-top: 30px; margin-left: 20px;">
+			</div>
+			
+			<div class="image-container">
+				<img src= " ANANDA6.png" alt="Immagine 2" height="410" width="550" style="margin-bottom: 30px; margin-top: 30px;">
+			</div>
+			
+			<div class="image-container">
+				<img src= " ANANDA7.png" alt="Immagine 2" height="410" width="550" style="margin-bottom: 30px; margin-top: 30px;">
+			</div>			
+			
+			
+			<p style="margin-top: 30px;">  
+			
+			Through our inquiries and interactions with the LLMs, we discovered that this instrument <b>is not really a percussion instrument</b> as classified in ArCo, <b>but rather a chordophone</b>. Moreover, ChatGPT explained its typical playing technique, pointing out that the string is usually <b>‘plucked with a plectrum’</b>. Therefore, we decided to <b>verify the presence of a plectrum</b>, which was not mentioned in ArCo. We also posed more specific questions about the tools used to play the instrument to ChatGPT, as it previously provided more detailed results compared to Gemini.
+			</p>
+			
+			<p style="margin-top: 30px;"> <b>CHAT GPT</b> </p>
+
+			<div class="image-container">
+				<img src= " ANANDA8.png" alt="Immagine 1" height="510" width="600" style="margin-bottom: 30px; margin-top: 30px; margin-left: 380px;">
+			</div>
+			
+			<div class="image-container">
+				<img src= " ANANDA9.png" alt="Immagine 2" height="410" width="550" style="margin-bottom: 30px; margin-top: 30px;">
+			</div>
+			
+			<p style="margin-top: 30px;"> As can be noticed, ChatGPT still classifies the Ananda Lahari as a percussion instrument, even though its playing technique primarily involves the use of strings and tools such a plectrum or a stick. </p>
+			
+			<p> Hence, we decided to delve deeper into the <b>sources suggested by the LLM (see <a href="Methodology.html"> Methodology </a>).</b> Therefore, although the instrument incorporates a drum-like body, and it is often associated to the class of percussions, we observed that it is actually a chordophone from to the way it is played, employing a plectrum (or a stick) to produce its sound:</p>
+			
+			<div class="image-container">
+				<img src= " ANANDA10.png" alt="Immagine 1" height="510" width="600" style="margin-bottom: 30px; margin-top: 30px; margin-left: 380px;">
+			</div>
+			
+			<div class="image-container">
+				<img src= " ANANDA11.png" alt="Immagine 2" height="410" width="550" style="margin-bottom: 30px; margin-top: 30px;">
+			</div>
+			
+			<p style="margin-top:30 px;"> In addition, we look at other reliable websites such as the New York MET (Metropolitan Museum of Art), where we find an example of Ananda Lahari very similar to the one collected on ArCo. This was one of the most important sources we looked at, as it described the instrument as a <b>chordophone</b>, notwithstanding its drum-structure:</p>
+			
+			<img src= " ANANDA12.png" height="410" width="550" style="margin-bottom: 30px; margin-top: 30px; margin-left: 580;">
+
+			<p style=" margin-top: 30px;"> Furthermore, out of curiosity, we have also included a <a href="https://www.youtube.com/watch?v=CIMluQCnLDM"> Link</a> to listen to how this musical instrument is played. In the video, the instrument is never used as a drum but is always played with a plectrum. </p>
+			
+			<p style="font-size: 30px; margin-top: 30px;"> <b> NEW TRIPLES </b> </p>
+			
+			<p style="margin-top: 30px;"> Considering all the previously mentioned information, what we would like to propose is creating <b>two new triples.</b> </p>
+			
+			<ol>
+				<li style="font-size: 20px; margin-top: 30px;"> The first should specify the fact that the Ananda Lahari is not simply a ‘strumento a percussione’ as described in ArCo, <b>but it is a chordophone which includes some characteristics of a drum.</b> It could be defined as a hybrid instrument incorporating both features of chordophones and percussions, but its primary category should be ‘cordofono’. However, this is probably a detail that only an expert could ascertain, so what we can propose is just a suggestion to change or modify its property with the predicate <i>a-dd:hasCulturalPropertyType</i>. </li>
+				
+				<p> The corresponding triple could be the following one:</p>
+				
+				<p> <b>1 <sup> st </sup> TRIPLE </b></p>
+				
+				<p style="margin-top: 30px"> <b>SUBJECT</b> </p>			
+				<p> Strumento Musicale a Percussione </p>
+				<a href= "https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299"> https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299  </a>
+				
+				<p style="margin-top: 30px"> <b>PREDICATE</b> </p>
+				<p> a-dd:hasCulturalPropertyType </p>
+				
+				<p> <b>OBJECT</b> </p>			
+				<p> Strumento Musicale Cordofono </p>
+				<a href= "https://w3id.org/arco/resource/CulturalPropertyType/1a90e198436ad40e505c71f0a63c1a3a  "> https://w3id.org/arco/resource/CulturalPropertyType/1a90e198436ad40e505c71f0a63c1a3a    </a>
+
+				<P style="margin-top: 30px;"> Of course this will be only the first step, because we would also need to change the label of the subject and its <i>rdfs:comment</i>, adding a little description. For example, we could change the label like this: </p>
+				
+				<p style="margin-top: 30px"> <b>SUBJECT</b> </p>			
+				<a href= "https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299"> https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299  </a>
+				
+				<p style="margin-top: 30px"> <b>PREDICATE</b> </p>
+				<p> rdfs:label </p>
+				
+				<p> <b>OBJECT</b> </p>			
+				<p> "Cordofono" </p>
+				
+				<p style="margin-top: 30px;"> Finally, we could also modify the <i>rdfs:comment</i> and add a <i>core:description</i> where we would define this specific type of instrument, which is a hybrid between a chordophone and a percussion instrument. However, as already clarified, these changes would need to be first verified by experts in the field.  </p>
+
+				<li style="font-size: 20px; margin-top: 30px;"> The second triple should specify the number of components the instrument is made of, which in this case are two if we include the plectrum not represented in the depiction. Thus, we asked to ChatGPT how we could clarify the number of components, and it suggested using the string ‘xsd:integer’: 	</li>
+
+				<img src="ANANDA13.jpg" style="margin-top: 30px; margin-left: 520px;">
+				
+				<p> <b>2 <sup> nd </sup> TRIPLE </b></p>
+				
+				<p style="margin-top: 30px"> <b>SUBJECT</b> </p>			
+				<p> Strumento Musicale a Percussione </p>
+				<a href= "https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299"> https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531299  </a>
+				
+				<p style="margin-top: 30px"> <b>PREDICATE</b> </p>
+				<p> arco:hasnumberOfComponents  </p>
+				
+				<p> <b>OBJECT</b> </p>			
+				<p> "2"^^xsd:integer  </p>
+				
+			</ol>
+				
+				
+		<li style=" color:black; font-size: 40; text-align: justify; margin-top: 50px; margin-bottom: 30px;"> <p style= "font-size: 40;"> <b> DAMPHA </b> </p> </li>
+			
+			<a style="margin-top: 30px;" href= " https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531316"> https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531316 </a>
+			
+			<p style="margin-top: 30px;"> Continuing our exploration of ethnic percussion musical instruments, we encountered another anomaly: a musical instrument (DAMPHA) depicted <b>with a stick</b> in the image, not having this <b>item indicated in the components.</b> As previously noted, instruments with sticks or plectrums typically have the number of such details included in the components list (refer to the <a href="Appendix.html"> Appendix </a>).  </p>
+				
+			<img src="DAMPHA1.png" style=" margin-left: 400px;" height="500" width="1000">
+			
+			<p style="margin-top: 30px;"> To double-check this observation, we also ran a query, characterized by the ASK-clause query form, asking whether the percussion instrument Dampha had any component mentioned in its record: </p>
+			
+			
+			<p style=" margin-top: 30px;">
+			PREFIX rdf: <a href= "http://www.w3.org/1999/02/22-rdf-syntax-ns"> http://www.w3.org/1999/02/22-rdf-syntax-ns </a> 
+			</p>
+			<p>
+			PREFIX rdfs: <a href=" http://www.w3.org/2000/01/rdf-schema#">  http://www.w3.org/2000/01/rdf-schema# </a>
+			</p>
+			<p>
+			PREFIX arco: <a href=" https://w3id.org/arco/ontology/arco/" > https://w3id.org/arco/ontology/arco/ </a> 
+			</p>
+			
+			<p style=" margin-top: 30px;">
+			ASK {  
+			</p>
+			<p>
+			<https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531316> arco:hascomponent ?component ;
+			</p>
+			<p>
+			rdfs:label ?label .  
+			</p>
+			<p>
+			OPTIONAL { <https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531316> arco:hasNumberOfComponents ?count.} 
+			</p>
+			<p>
+			} 
+			</p>
+			
+			<p style="margin-top: 30 px;">  According to our analysis, the result retrieved from SPARQL confirmed the missing information: </p>
+			
+			<p style="font-size: 25px; margin-top: 30px;"> <b> FALSE </b> </p>
+			
+			<p style="margin-top: 30px;">  Since we didn’t have much information and documentation relating to this instrument, we preferred employing the LLMs, and we used the <i><b>Generated Knowledge prompting technique</i></b> to retrieve some relevant results. Both Gemini and ChatGPT gave us information about the stick, mentioning it as one of the main tools with which the instrument is played. </p>
+			
+			<p style="margin-top: 30px;"> <b>GEMINI</b> </p>	
+
+			<div class= "image-container">
+				
+				<img src= " DAMPHA2.png" alt="Immagine 2" height="500" width="600" style="margin-left: 320px; margin-top: -30px; margin-bottom: 30px;">
+			</div>
+			
+			<div class= "image-container">
+				<img src= " DAMPHA3.png" alt="Immagine 1" height="510" width="600" style="margin-bottom: 25px; margin-top: 50px;">
+				
+			</div>	
+			
+			<p style="margin-top: 30px; margin-bottom: 30px;"> <b>CHAT GPT</b> </p>	
+			
+			<img src="DAMPHA4.jpg" style="margin-left: 320px;">
+			
+			<img src="DAMPHA5.png" height="400" width="1000" style="margin-left: 420px;">
+			
+			<p> Moreover, continuing with the same prompting technique, we asked them to explain more deeply why sticks can be the main tools used to play the Dampha musical instrument. </p>
+			
+			<p style="margin-top: 30px;"> <b>GEMINI</b> </p>
+			
+			<img src="DAMPHA6.png" style="margin-left: 520px;">
+			
+			<p style="margin-top: 30px;"> <b>CHAT GPT</b> </p>
+			
+			<img src="DAMPHA7.png" style="margin-left: 420px;">
+			
+			
+			<p style=" margin-top: 30px;"> Thanks to the resource made we can confirm that the stick that is represented in ArCo depiction together with the Dampha was effectively used to play the instrument. Thus, we can propose a new triple that specifies the number of components as ‘2’, using the same string that we have employed in the previous triple regarding the components: </p>
+			
+			
+			<p style="margin-top: 30px"> <b>SUBJECT</b> </p>			
+			<p> Strumento Musicale a Percussione </p>
+			<a href= "https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531316"> https://w3id.org/arco/resource/DemoEthnoAnthropologicalHeritage/1200531316  </a>
+			
+			<p style="margin-top: 30px"> <b>PREDICATE</b> </p>
+			<p> arco:hasnumberOfComponents  </p>
+			
+			<p> <b>OBJECT</b> </p>			
+			<p style="margin-bottom: 30px;"> "2"^^xsd:integer  </p>
+			
+		</ol>
+
+				
+
+	</body>
+	
+</html>

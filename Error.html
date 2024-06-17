@@ -1,0 +1,74 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<title>INFORMATICA_PROJECT</title>
+	
+	</head>
+	<body>
+		<header class="page-header" role="banner">
+		<h1 id="project_name">Harmonizing ArCo: An RDF-based Approach to Musical Instrument Ontology</h1>
+		<h2 id="project_tagline">Information Technology Skills Project 2024</h2>
+		</header>
+		<div class="topnav">
+			  <!-- Qua c'è la predisposizione del menù-->
+			  <a href="home.html">Home</a>
+			  <a href="Methodology.html">Methodology</a>
+			  <a href="Analysis.html">Analysis and Results</a>
+			  <a class="active">Model Response Evaluation</a>
+			  <a href="Conclusions.html">Conclusions</a>
+			  <a href="Appendix.html">Appendix</a>
+		</div>
+	
+	<p style="margin-top: 30px; margin-bottom: 30px;"> While we were exploring ArCo, we often took advantage of the knowledge of the LLMs not only to retrieve technical information (like specific SPARQL strings) but also to have a wider perspective about the topic and the context we were examining. However, since LLMs are not always such reliable sources, they ran frequently into errors, making the analysis even more challenging. Therefore, most times we had to correct their approach and try to guide them toward what we were asking for.</p>
+	
+	<p> Here above we have provided a few examples: </p>
+	
+	<p style=" margin-top: 30px;"> <b> GEMINI </b> </p>
+	
+		<div class= "image-container">
+			
+			<p class="nowrap" style="text-align: center; margin-left: 600px;"> BEFORE <span style="padding-left: 250px;">  AFTER </span> </p>
+			<img src= " BEFORE.png" alt="Immagine 1" height="400" width="400" style="margin-left: 380px; margin-top: 30px; margin-bottom: 30px;">
+		</div>
+		
+		<div class= "image-container">
+			<img src= " AFTER.png" alt="Immagine 2" height="410" width="400" style="margin-bottom: 25px; margin-left: -240px;">
+		</div>
+	
+	<p> For instance, when formulating the first new triple about the Zither instrument, we asked Gemini to suggest how to create a triple to establish the relationship between the subject and the 6 materials it was made of. It proposed the key word UNION, but we questioned its approach, as the UNION-clause wasn’t the best option to opt for in this context. The key word could indeed create ambiguity, as the query would have probably interpreted it as an ‘OR’ operator, and the instrument would have been linked to just one material. Therefore, after explaining this to Gemini, it changed approach and suggested making a single statement for each material linked to the same subject. </p>
+		
+	<p style=" margin-top: 30px;"> <b> CHAT GPT </b> </p>
+		
+		<div class= "image-container">
+			
+			<img src= " chatgpt_1.png" alt="Immagine 1" height="400" width="360" style="margin-left: 5px; margin-top: 30px; margin-bottom: 30px;">
+		</div>
+		
+		<div class= "image-container">
+			<img src= " chatgpt_2.png" alt="Immagine 2" height="410" width="360" style="margin-bottom: 25px;">
+		</div>
+
+		<div class= "image-container">
+			<img src= " chatgpt_3.png" alt="Immagine 3" height="410" width="360" style="margin-bottom: 25px;">
+		</div>
+	
+			<div class= "image-container">
+			<img src= " chatgpt_4.png" alt="Immagine 4" height="410" width="360" style="margin-bottom: 25px;">
+		</div>
+		
+		
+		<p> Our experience using ChatGPT was disappointing when we asked about the musical instrument "Ananda Lahari" without additional context. Initially, it incorrectly stated it wasn't a musical instrument. Despite clarifying its presence on the ArCo ontology website, ChatGPT persisted with irrelevant modal expressions such as “could be”, “possibly”, “likely” and descriptions of percussion instruments in general, failing to provide a direct answer to our questions. </p>
+		
+		<p> We acknowledge that our initial question lacked specificity, which probably contributed to the model's misunderstandings. We also realized that providing more detailed information or examples might have been necessary for better accuracy, rather than relying solely on corrections like "I think you are wrong" or expressing dissatisfaction with its responses. </p>
+		
+		<p> When asked a more detailed question, the answer was significantly different and much more accurate. </p>
+		
+		<p> However, it is surprising that Gemini provided the correct answer immediately to the same initial question: </p>
+		
+		<img src= "chatgpt_5.png" height="400" width="400" style=" margin-top: 30px; margin-bottom: 25px; margin-left: 520px;">
+		
+	
+		
+	</body>
+	
+</html>
